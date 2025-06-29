@@ -157,12 +157,12 @@ Each story multi-method compiles to a ES module that Storybook.js can understand
 - Follow PascalCase or camelCase conventions for readability
 
 #### Examples
-| Dispatch Value | Output File | Purpose |
-|----------------|-------------|---------|
-| `"Component/Buttons/Primary"` | `js-out/component/buttons/primary_story.js` | Primary button variants |
-| `"Component/Forms/Input/Text"` | `js-out/component/forms/input/text_story.js` | Text input stories |
-| `"Layout/Card/Basic"` | `js-out/layout/card/basic_story.js` | Basic card layouts |
-| `"Feedback/Alert/Types"` | `js-out/feedback/alert/types_story.js` | Different alert types |
+| Dispatch Value | Output File |
+|----------------|-------------|
+| `"Component/Buttons/Primary"` | `js-out/component/buttons/primary_story.js` |
+| `"Component/Forms/Input/Text"` | `js-out/component/forms/input/text_story.js` |
+| `"Layout/Card/Basic"` | `js-out/layout/card/basic_story.js` |
+| `"Feedback/Alert/Types"` | `js-out/feedback/alert/types_story.js` |
 
 **Popular Organizational Approaches:**
 

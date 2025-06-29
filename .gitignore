@@ -1,0 +1,10 @@
+.lsp/
+node_modules/
+.idea/
+.clj-kondo/
+target/
+pom.xml
+*.iml
+.shadow-cljs/
+.storybook/js-out/
+.storybook/cljs-out/

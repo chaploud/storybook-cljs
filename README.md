@@ -49,14 +49,19 @@ Add to `project.clj` or `deps.edn`:
 ### 4. Write your first story
 
 ```clojure
-(ns todomvc.stories
-  (:require [io.factorhouse.storybook.core :as storybook]))
+(ns example.core
+  (:require [io.factorhouse.storybook.core :as storybook]
+            [uix.core :refer [$ defui]]))
+
+(defui button
+  [{:keys [variant size children] :or {variant :primary size :md}}]
+    ($ :button {} children))
 
 (defmethod storybook/story "Component/Buttons/Secondary" [_]
   {:component button
-   :stories {:Default {:variant :secondary :children ["Secondary Button"]}
-             :Large {:variant :secondary :size :lg :children ["Large Secondary"]}
-             :WithIcon {:variant :secondary :children ["Secondary"]}}})
+   :stories {:Default  {:args {:variant :secondary :children ["Secondary Button"]}}
+             :Large    {:args {:variant :secondary :size :lg :children ["Large Secondary"]}}
+             :WithIcon {:args {:variant :secondary :children ["Secondary"]}}}))
 ```
 
 ### 5. Watch for changes
@@ -74,3 +79,5 @@ npx storybook build
 ```
 
 Your Storybook project will get compiled to `./storybook-static/`
+
+

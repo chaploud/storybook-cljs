@@ -1,7 +1,7 @@
-import { JSDOM } from "jsdom";
-import fs from "fs";
-import path from "path";
-import { basePath, resolveFile, relativePath } from "../util.js";
+import { JSDOM } from 'jsdom';
+import fs from 'fs';
+import path from 'path';
+import { basePath, resolveFile, relativePath } from '../util.js';
 
 function setupJSDOM() {
   try {
@@ -15,29 +15,33 @@ function setupJSDOM() {
 
 async function resolveStories(outputDir, compilerNs, cljsEntry) {
   try {
-    await import(resolveFile(outputDir, cljsEntry + ".js"));
+    await import(resolveFile(outputDir, cljsEntry + '.js'));
     const storybookCljs = await import(
-      resolveFile(outputDir, "io.factorhouse.storybook.core.js"),
+      resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
     );
-    return storybookCljs.default.export_stories(relativePath(outputDir, ".storybook"), compilerNs, cljsEntry);
+    return storybookCljs.default.export_stories(
+      relativePath(outputDir, '.storybook'),
+      compilerNs,
+      cljsEntry
+    );
   } catch (error) {
     throw new Error(`Failed to resolve stories: ${error.message}`);
   }
 }
 
 function ensureStorybook() {
-  const resolved_path = path.resolve(basePath(), ".storybook/");
+  const resolved_path = path.resolve(basePath(), '.storybook/');
   if (fs.existsSync(resolved_path)) {
     return true;
   } else {
     throw new Error(
-      `Failed to compile stories: directory ${resolved_path} does not exist.`,
+      `Failed to compile stories: directory ${resolved_path} does not exist.`
     );
   }
 }
 
 export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry) {
-  console.time("storybook-compile")
+  console.time('storybook-compile');
   ensureStorybook();
   setupJSDOM();
   const to_export = await resolveStories(outputDir, compilerNs, cljsEntry);
@@ -45,7 +49,7 @@ export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry) {
     const filePath = resolveFile(jsOutDir, fileName);
     const dirPath = path.dirname(filePath);
     fs.mkdirSync(dirPath, { recursive: true });
-    fs.writeFileSync(filePath, content, "utf8");
+    fs.writeFileSync(filePath, content, 'utf8');
   });
-  console.timeEnd("storybook-compile")
+  console.timeEnd('storybook-compile');
 }

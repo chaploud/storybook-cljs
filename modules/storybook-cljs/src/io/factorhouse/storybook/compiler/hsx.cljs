@@ -20,7 +20,7 @@
       (update :component proxy)
       (update :stories
               (fn [stories]
-                (into {} (map (fn [[k v]] 
+                (into {} (map (fn [[k v]]
                                 [k (update v :args tagged-json/serialize-values)]))
                       stories)))
       (clj->js)))

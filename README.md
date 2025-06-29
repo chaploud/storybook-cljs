@@ -122,7 +122,7 @@ project/
 
 ```clojure
 ;; dev-src/stories.cljs - Central collection namespace
-(ns dev-src.stories
+(ns stories
   (:require [dev-src.stories.buttons.primary]
             [dev-src.stories.buttons.secondary]
             [dev-src.stories.forms.inputs]
@@ -132,7 +132,7 @@ project/
 ### Basic Usage
 
 ```clojure
-(ns dev-src.stories.buttons.primary
+(ns stories.buttons
   (:require [io.factorhouse.storybook.core :as storybook]
             [your-app.components.button :refer [button]]))
 

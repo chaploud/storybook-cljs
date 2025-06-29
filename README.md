@@ -266,7 +266,7 @@ StorybookJS expects story `:args` as a plain JS object. In order to support rich
 
 Think of this tuple format like a reader literal in EDN.
 
-This format is chosen over more complex formats (such as Transit+JSON) as it allows for easier viewing/editing of Clojure types within the Storybook control UI:
+This format is chosen over more complex formats (such as Transit+JSON) as it allows for easier viewing/editing of Clojure types within the Storybook controls UI:
 
 ![Tagged JSON](/resources/tagged_json.png)
 

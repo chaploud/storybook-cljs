@@ -127,10 +127,10 @@ project/
 ```clojure
 ;; dev-src/stories.cljs - Central collection namespace
 (ns stories
-  (:require [dev-src.stories.buttons.primary]
-            [dev-src.stories.buttons.secondary]
-            [dev-src.stories.forms.inputs]
-            [dev-src.stories.layout.cards]))
+  (:require [stories.buttons.primary]
+            [stories.buttons.secondary]
+            [stories.forms.inputs]
+            [stories.layout.cards]))
 ```
 
 ### Basic Usage
@@ -150,7 +150,7 @@ project/
 
 The dispatch value represents the **hierarchical path** of your story and determines the file output location:
 
-Each story multi-method compiles to a CommonJS Story file that Storybook.js can understand. The build hooks defined in your shadow-cljs profile take care of this compilation step.
+Each story multi-method compiles to a ES module that Storybook.js can understand. The build hooks defined in your shadow-cljs profile take care of this compilation step.
 
 #### Format
 - Use forward slashes (`/`) to separate hierarchy levels

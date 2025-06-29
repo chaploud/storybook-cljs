@@ -52,8 +52,11 @@ Add to `project.clj` or `deps.edn`:
 (ns todomvc.stories
   (:require [io.factorhouse.storybook.core :as storybook]))
 
-(defmethod storybook/story "Core/Components/Button" [_]
-  {})
+(defmethod storybook/story "Component/Buttons/Secondary" [_]
+  {:component button
+   :stories {:Default {:variant :secondary :children ["Secondary Button"]}
+             :Large {:variant :secondary :size :lg :children ["Large Secondary"]}
+             :WithIcon {:variant :secondary :children ["Secondary"]}}})
 ```
 
 ### 5. Watch for changes

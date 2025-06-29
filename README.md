@@ -20,7 +20,7 @@ npx @factorhouse/storybook-cljs init
 
 The `init` command will install the required dependencies to your `package.json` file and initialize the required project structure in the `.storybook/` directory.
 
-### 2. Setup shadow-cljs build profile
+### 2. Configure shadow-cljs build
 
 You will need to add a `:storybook` shadow-cljs build profile:
 
@@ -28,15 +28,19 @@ You will need to add a `:storybook` shadow-cljs build profile:
 {:builds {:storybook {:target      :npm-module
                       :entries     [todomvc.stories]
                       :output-dir  ".storybook/cljs-out/"
-                      :build-hooks [(io.factorhouse.storybook.compiler/configure {:compiler io.factorhouse.storybook.compiler.hsx})
+                      :build-hooks [(io.factorhouse.storybook.compiler/configure 
+                                      {:compiler io.factorhouse.storybook.compiler.hsx})
                                     (io.factorhouse.storybook.compiler/compile)]}}}
 ```
 
 * Target: `:npm-module`
 * Output directory: `.storybook/cljs-out/`
-* Storybook build hook: Specify the `:compiler` as either `io.factorhouse.storybook.compiler.hsx` or `io.factorhouse.storybook.compiler.uix`
+* Storybook build hook:
+  - Specify the `:compiler` as either `io.factorhouse.storybook.compiler.hsx` or `io.factorhouse.storybook.compiler.uix`
 
-### 3. Install ClojureScript dependency
+### 3. Add ClojureScript dependency
+
+Add to `project.clj` or `deps.edn`:
 
 ```clojure
 [io.factorhouse/storybook-cljs "0.1.0"]

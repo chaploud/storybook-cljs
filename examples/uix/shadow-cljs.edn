@@ -1,10 +1,10 @@
-{:dependencies [[io.factorhouse/hsx "0.1.23"] 
+{:dependencies [[com.pitch/uix.core "1.4.4"]
                 [io.factorhouse/storybook-cljs "0.1.27"]]
  :source-paths  ["src"]
  :builds        {:storybook {:target            :npm-module
                              :entries           [example.core]
                              :output-dir        ".storybook/cljs-out/"
                              :build-hooks       [(io.factorhouse.storybook.compiler/configure
-                                                  {:compiler io.factorhouse.storybook.compiler.hsx
+                                                  {:compiler io.factorhouse.storybook.compiler.uix
                                                    :npm-cmd "file:../../modules/cli"})
                                                  (io.factorhouse.storybook.compiler/compile)]}}}

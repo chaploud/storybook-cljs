@@ -1,6 +1,6 @@
 {
   "name": "@factorhouse/storybook-cljs",
-  "version": "1.0.0",
+  "version": "0.1.39",
   "description": "CLI tool for ClojureScript Storybook integration",
   "main": "src/index.js",
   "bin": {

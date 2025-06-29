@@ -3,7 +3,7 @@
   (:import (java.lang ProcessBuilder))
   (:refer-clojure :exclude [compile]))
 
-(defn run-process
+(defn- run-process
   [args]
   (let [pb      (ProcessBuilder. args)
         process (.start pb)
@@ -40,13 +40,27 @@
         args       ["npx" npm-cmd "compile" (name compiler) output-dir js-out entry]]
     (-> build-state
         (assoc ::args args)
+        (assoc ::js-out js-out)
         (update-in [:shadow.build/config :entries] conj compiler)
         (assoc-in [:shadow.build/config :js-options :resolve "os"] {:target :npm :require "os-browserify/browser"})
         (assoc-in [:shadow.build/config :js-options :resolve "tty"] {:target :npm :require "tty-browserify"}))))
 
+(defn- cleanup-story-files
+  [directory-path]
+  (let [story-files (some->> directory-path
+                             (io/file)
+                             (file-seq)
+                             (filter #(.isFile %))
+                             (filter #(.endsWith (.getName %) "_story.js")))]
+    (doseq [file story-files]
+      (io/delete-file file))))
+
 (defn compile
   {:shadow.build/stage :flush}
   [build-state]
+
+  (cleanup-story-files (::js-out build-state))
+
   (let [args    (::args build-state)
         process (run-process args)
         result  (.waitFor process)]

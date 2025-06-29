@@ -1,7 +1,7 @@
 import { JSDOM } from "jsdom";
 import fs from "fs";
 import path from "path";
-import {basePath, resolveFile, relativePath} from "../util.js";
+import { basePath, resolveFile, relativePath } from "../util.js";
 
 function setupJSDOM() {
   try {
@@ -37,6 +37,7 @@ function ensureStorybook() {
 }
 
 export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry) {
+  console.time("storybook-compile")
   ensureStorybook();
   setupJSDOM();
   const to_export = await resolveStories(outputDir, compilerNs, cljsEntry);
@@ -45,6 +46,6 @@ export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry) {
     const dirPath = path.dirname(filePath);
     fs.mkdirSync(dirPath, { recursive: true });
     fs.writeFileSync(filePath, content, "utf8");
-    console.log(`Compiled ${filePath}`);
   });
+  console.timeEnd("storybook-compile")
 }

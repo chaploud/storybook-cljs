@@ -270,6 +270,14 @@ See [tagged_json.cljc](https://github.com/factorhouse/storybook-cljs/blob/main/m
 
 In the cases where Tagged JSON is too limiting for your components, simply wrap your story `:component` with another function that handles your serdes logic.
 
+## Writing your own compiler
+
+If storybook-cljs does not support your React library of choice, you can always write a customer compiler.
+
+See: [compiler/uix.cljs](https://github.com/factorhouse/storybook-cljs/blob/main/modules/storybook-cljs/src/io/factorhouse/storybook/compiler/uix.cljs) for reference.
+
+You will need to create a namespace which JS exports a function named `storybook`.
+
 ## Copyright and License
 
 Copyright © 2025 Factor House Pty Ltd.

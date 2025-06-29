@@ -150,7 +150,7 @@ project/
 
 The dispatch value represents the **hierarchical path** of your story and determines the file output location:
 
-Each story multi-method compiles to a ES module that Storybook.js can understand. The build hooks defined in your shadow-cljs profile take care of this compilation step.
+Each story multi-method compiles to a ES module that Storybook.js can understand. The build hooks defined in your shadow-cljs profile takes care of this compilation step.
 
 #### Format
 - Use forward slashes (`/`) to separate hierarchy levels

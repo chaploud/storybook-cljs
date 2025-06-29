@@ -1,5 +1,5 @@
 {:dependencies [[io.factorhouse/hsx "0.1.23"]
-                [io.factorhouse/storybook-cljs "0.1.39"]]
+                [io.factorhouse/storybook-cljs "0.2.0"]]
  :source-paths  ["src"]
  :builds        {:storybook {:target            :npm-module
                              :entries           [example.core]

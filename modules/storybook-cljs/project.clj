@@ -1,4 +1,4 @@
-(defproject io.factorhouse/storybook-cljs "0.1.39"
+(defproject io.factorhouse/storybook-cljs "0.2.0"
   :description "StorybookJS with ClojureScript"
   :url "http://github.com/factorhouse/storybook-cljs"
   :license {:name         "Apache-2.0 License"

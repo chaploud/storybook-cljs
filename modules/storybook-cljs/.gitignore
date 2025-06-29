@@ -4,6 +4,7 @@ node_modules/
 .clj-kondo/
 target/
 pom.xml
+pom.xml.asc
 *.iml
 .shadow-cljs/
 .storybook/js-out/

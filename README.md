@@ -64,6 +64,11 @@ Add to `project.clj` or `deps.edn`:
              :WithIcon {:args {:variant :secondary :children ["Secondary"]}}}))
 ```
 
+#### Story examples
+
+* **UIx** - see [examples/uix](/examples/uix) for details
+* **HSX** - see [examples/hsx](/examples/hsx) for details
+
 ### 5. Watch for changes
 
 ```bash
@@ -89,7 +94,7 @@ Use the `io.factorhouse.storybook.core/story` multi-method to define component s
 
 ### Project Structure
 
-You can define multiple story hierarchies in one file:
+You can define multiple story hierarchies in one CloujreScript namespace:
 ```clojure
 (defmethod storybook/story "Component/Buttons/Primary" [_] ...)
 (defmethod storybook/story "Component/Buttons/Secondary" [_] ...)  
@@ -113,7 +118,7 @@ project/
 └── shadow-cljs.edn
 ```
 
-**Important**: Your `shadow-cljs.edn` `:entries` must include the central namespace (e.g., `dev-src.stories`) that requires all story namespaces to ensure multi-methods are loaded.
+**Important**: Your `shadow-cljs.edn` `:entries` must include the central namespace (e.g., `dev-src.stories`) that requires all story namespaces to ensure multi-methods are loaded at runtime.
 
 ```clojure
 ;; dev-src/stories.cljs - Central collection namespace

@@ -94,7 +94,7 @@ Use the `io.factorhouse.storybook.core/story` multi-method to define component s
 
 ### Project Structure
 
-You can define multiple story hierarchies in one CloujreScript namespace:
+You can define multiple story hierarchies in the same CloujreScript namespace:
 ```clojure
 (defmethod storybook/story "Component/Buttons/Primary" [_] ...)
 (defmethod storybook/story "Component/Buttons/Secondary" [_] ...)  
@@ -146,12 +146,11 @@ project/
 
 The dispatch value represents the **hierarchical path** of your story and determines the file output location:
 
-Each story multi-method compiles to a CommonJS Story file that Storybook.js understands. The build hooks defined in your shadow-cljs build take care of this compilation step.
+Each story multi-method compiles to a CommonJS Story file that Storybook.js can understand. The build hooks defined in your shadow-cljs profile take care of this compilation step.
 
 #### Format
 - Use forward slashes (`/`) to separate hierarchy levels
 - Follow PascalCase or camelCase conventions for readability
-- Be descriptive but concise
 
 #### Examples
 | Dispatch Value | Output File | Purpose |
@@ -187,7 +186,7 @@ Each story multi-method compiles to a CommonJS Story file that Storybook.js unde
 
 ### Story definition
 
-The multi-method must return a map with the following structure:
+`storybook/story` must return a map with the following structure:
 
 ```clojure
 {:component component-function   ; Required: The component function to render (either a UIx or HSX component)
@@ -196,8 +195,7 @@ The multi-method must return a map with the following structure:
 
 #### Component Key
 - **Required**: The actual component function reference
-- **Type**: Function that accepts props and returns UIx elements
-- **Example**: `button`, `input`, `card`
+- **Type**: Function that accepts props and returns UIx/HSX component
 
 #### Stories Key
 - **Required**: A map where keys are story names and values are story configurations
@@ -214,7 +212,7 @@ The multi-method must return a map with the following structure:
  :parameters  {}           ; Optional: Story parameters}
 ```
 
-#### Component Props (args)
+#### Component Args (props)
 
 ```clojure
 {:args {:variant  :primary          ; Component prop
@@ -252,3 +250,26 @@ The multi-method must return a map with the following structure:
                                  :children ["This cannot be undone"]
                                  :variant :danger}}}})
 ```
+
+## Tagged JSON / SerDes
+
+StorybookJS expects story `:args` as a plain JS object. In order to support rich Clojure types (keywords, sets, etc) storybook-cljs uses 'tagged JSON': 
+
+```
+:foo ;; serializes to ["kw!", "foo"]
+#{1 2 3} ;; serializes to ["set!", 1, 2, 3] 
+```
+
+This format is chosen over more complex formats (such as Transit+JSON) as it allows for easier viewing/editing of Clojure types within the Storybook control UI:
+
+![Tagged JSON](/resources/tagged_json.png)
+
+See [tagged_json.cljc](https://github.com/factorhouse/storybook-cljs/blob/main/modules/storybook-cljs/src/io/factorhouse/storybook/tagged_json.cljc) to extend for custom types.
+
+In the cases where Tagged JSON is too limiting for your components, simply wrap your story `:component` with another function that handles your serdes logic.
+
+## Copyright and License
+
+Copyright © 2025 Factor House Pty Ltd.
+
+Distributed under the Apache-2.0 License, the same as Apache Kafka.

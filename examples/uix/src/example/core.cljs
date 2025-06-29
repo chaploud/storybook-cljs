@@ -3,8 +3,7 @@
             [uix.core :refer [$ defui]]))
 
 (defui button [{:keys [variant size disabled on-click class children]
-               :or {variant :primary size :md}}]
-  (prn "Size => " size "Variant => " variant)
+                :or {variant :primary size :md}}]
   (let [base-classes "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         variant-classes (case variant
                           :primary "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500"
@@ -26,39 +25,39 @@
 
 (defmethod storybook/story "Component/Buttons/Primary" [_]
   {:component button
-   :stories {:Default {:children ["Primary Button"]}
-             :Large {:size :lg :children ["Large Primary"]}
-             :Small {:size :sm :children ["Small Primary"]}
-             :Disabled {:disabled true :children ["Disabled"]}
-             :WithClick {:on-click #(js/alert "Primary clicked!") :children ["Click Me"]}}})
+   :stories {:Default {:args {:children ["Primary Button"]}}
+             :Large {:args {:size :lg :children ["Large Primary"]}}
+             :Small {:args {:size :sm :children ["Small Primary"]}}
+             :Disabled {:args {:disabled true :children ["Disabled"]}}
+             :WithClick {:args {:on-click #(js/alert "Primary clicked!") :children ["Click Me"]}}}})
 
 (defmethod storybook/story "Component/Buttons/Secondary" [_]
   {:component button
-   :stories {:Default {:variant :secondary :children ["Secondary Button"]}
-             :Large {:variant :secondary :size :lg :children ["Large Secondary"]}
-             :WithIcon {:variant :secondary :children ["Secondary"]}}})
+   :stories {:Default {:args {:variant :secondary :children ["Secondary Button"]}}
+             :Large {:args {:variant :secondary :size :lg :children ["Large Secondary"]}}
+             :WithIcon {:args {:variant :secondary :children ["Secondary"]}}}})
 
 (defmethod storybook/story "Component/Buttons/Danger" [_]
   {:component button
-   :stories {:Default {:variant :danger :children ["Delete"]}
-             :Confirm {:variant :danger :on-click #(js/confirm "Are you sure?") :children ["Confirm Delete"]}
-             :Small {:variant :danger :size :sm :children ["Remove"]}}})
+   :stories {:Default {:args {:variant :danger :children ["Delete"]}}
+             :Confirm {:args {:variant :danger :on-click #(js/confirm "Are you sure?") :children ["Confirm Delete"]}}
+             :Small {:args {:variant :danger :size :sm :children ["Remove"]}}}})
 
 (defmethod storybook/story "Component/Buttons/Variants" [_]
   {:component button
-   :stories {:Primary {:variant :primary :children ["Primary"]}
-             :Secondary {:variant :secondary :children ["Secondary"]}
-             :Danger {:variant :danger :children ["Danger"]}
-             :Success {:variant :success :children ["Success"]}
-             :Outline {:variant :outline :children ["Outline"]}
-             :Ghost {:variant :ghost :children ["Ghost"]}}})
+   :stories {:Primary {:args {:variant :primary :children ["Primary"]}}
+             :Secondary {:args {:variant :secondary :children ["Secondary"]}}
+             :Danger {:args {:variant :danger :children ["Danger"]}}
+             :Success {:args {:variant :success :children ["Success"]}}
+             :Outline {:args {:variant :outline :children ["Outline"]}}
+             :Ghost {:args {:variant :ghost :children ["Ghost"]}}}})
 
 ;; =============================================================================
 ;; INPUTS
 ;; =============================================================================
 
 (defui input [{:keys [type placeholder value disabled error label class on-change]
-              :or {type "text"}}]
+               :or {type "text"}}]
   ($ :div {:class "space-y-1"}
      (when label
        ($ :label {:class "block text-sm font-medium text-gray-700"} label))
@@ -77,16 +76,16 @@
 
 (defmethod storybook/story "Component/Forms/Input/Text" [_]
   {:component input
-   :stories {:Default {:placeholder "Enter text..."}
-             :WithLabel {:label "Username" :placeholder "Enter username"}
-             :WithValue {:label "Email" :value "user@example.com"}
-             :WithError {:label "Password" :type "password" :error "Password is required"}
-             :Disabled {:label "Disabled" :placeholder "Cannot edit" :disabled true}}})
+   :stories {:Default {:args {:placeholder "Enter text..."}}
+             :WithLabel {:args {:label "Username" :placeholder "Enter username"}}
+             :WithValue {:args {:label "Email" :value "user@example.com"}}
+             :WithError {:args {:label "Password" :type "password" :error "Password is required"}}
+             :Disabled {:args {:label "Disabled" :placeholder "Cannot edit" :disabled true}}}})
 
 (defmethod storybook/story "Component/Forms/Input/Email" [_]
   {:component input
-   :stories {:Default {:type "email" :placeholder "user@example.com" :label "Email Address"}
-             :WithValidation {:type "email" :label "Email" :value "invalid-email" :error "Please enter a valid email"}}})
+   :stories {:Default {:args {:type "email" :placeholder "user@example.com" :label "Email Address"}}
+             :WithValidation {:args {:type "email" :label "Email" :value "invalid-email" :error "Please enter a valid email"}}}})
 
 ;; =============================================================================
 ;; CARDS
@@ -108,23 +107,23 @@
 
 (defmethod storybook/story "Component/Layout/Card/Basic" [_]
   {:component card
-   :stories {:Default {:title "Card Title"
-                       :children "This is the card content area where you can put any content."}
-             :WithSubtitle {:title "User Profile"
-                            :subtitle "Manage your account settings"
-                            :children "Profile information and settings go here."}
-             :WithActions {:title "Confirmation"
-                           :children "Are you sure you want to delete this item?"
-                           :actions ($ :div {:class "flex space-x-2"}
-                                       ($ button {:variant :outline :size :sm :children ["Cancel"]})
-                                       ($ button {:variant :danger :size :sm :children ["Delete"]}))}}})
+   :stories {:Default {:args {:title "Card Title"
+                              :children "This is the card content area where you can put any content."}}
+             :WithSubtitle {:args {:title "User Profile"
+                                   :subtitle "Manage your account settings"
+                                   :children "Profile information and settings go here."}}
+             :WithActions {:args {:title "Confirmation"
+                                  :children "Are you sure you want to delete this item?"
+                                  :actions ($ :div {:class "flex space-x-2"}
+                                              ($ button {:variant :outline :size :sm :children ["Cancel"]})
+                                              ($ button {:variant :danger :size :sm :children ["Delete"]}))}}}})
 
 ;; =============================================================================
 ;; BADGES
 ;; =============================================================================
 
 (defui badge [{:keys [variant size class children]
-              :or {variant :default size :md}}]
+               :or {variant :default size :md}}]
   (let [base-classes "inline-flex items-center font-medium rounded-full"
         variant-classes (case variant
                           :default "bg-gray-100 text-gray-800"
@@ -142,23 +141,23 @@
 
 (defmethod storybook/story "Component/Display/Badge/Status" [_]
   {:component badge
-   :stories {:Active {:variant :success :children ["Active"]}
-             :Pending {:variant :warning :children ["Pending"]}
-             :Inactive {:variant :danger :children ["Inactive"]}
-             :Draft {:variant :default :children ["Draft"]}}})
+   :stories {:Active {:args {:variant :success :children ["Active"]}}
+             :Pending {:args {:variant :warning :children ["Pending"]}}
+             :Inactive {:args {:variant :danger :children ["Inactive"]}}
+             :Draft {:args {:variant :default :children ["Draft"]}}}})
 
 (defmethod storybook/story "Component/Display/Badge/Sizes" [_]
   {:component badge
-   :stories {:Small {:variant :primary :size :sm :children ["Small"]}
-             :Medium {:variant :primary :size :md :children ["Medium"]}
-             :Large {:variant :primary :size :lg :children ["Large"]}}})
+   :stories {:Small {:args {:variant :primary :size :sm :children ["Small"]}}
+             :Medium {:args {:variant :primary :size :md :children ["Medium"]}}
+             :Large {:args {:variant :primary :size :lg :children ["Large"]}}}})
 
 ;; =============================================================================
 ;; ALERTS
 ;; =============================================================================
 
 (defui alert [{:keys [variant title dismissible on-dismiss class children]
-              :or {variant :info}}]
+               :or {variant :info}}]
   (let [base-classes "rounded-md p-4"
         variant-classes (case variant
                           :info "bg-blue-50 border border-blue-200"
@@ -185,18 +184,18 @@
 
 (defmethod storybook/story "Component/Feedback/Alert/Types" [_]
   {:component alert
-   :stories {:Info {:variant :info :title "Information" :children ["This is an informational message."]}
-             :Success {:variant :success :title "Success!" :children ["Your changes have been saved."]}
-             :Warning {:variant :warning :title "Warning" :children ["Please review your input."]}
-             :Danger {:variant :danger :title "Error" :children ["Something went wrong."]}}})
+   :stories {:Info {:args {:variant :info :title "Information" :children ["This is an informational message."]}}
+             :Success {:args {:variant :success :title "Success!" :children ["Your changes have been saved."]}}
+             :Warning {:args {:variant :warning :title "Warning" :children ["Please review your input."]}}
+             :Danger {:args {:variant :danger :title "Error" :children ["Something went wrong."]}}}})
 
 (defmethod storybook/story "Component/Feedback/Alert/Dismissible" [_]
   {:component alert
-   :stories {:Default {:variant :info
-                       :title "Dismissible Alert"
-                       :dismissible true
-                       :on-dismiss #(js/alert "Alert dismissed!")
-                       :children ["Click the × to dismiss this alert."]}}})
+   :stories {:Default {:args {:variant :info
+                              :title "Dismissible Alert"
+                              :dismissible true
+                              :on-dismiss #(js/alert "Alert dismissed!")
+                              :children ["Click the × to dismiss this alert."]}}}})
 
 ;; =============================================================================
 ;; NAVIGATION
@@ -219,23 +218,23 @@
 
 (defmethod storybook/story "Component/Navigation/NavItem" [_]
   {:component nav-item
-   :stories {:Default {:href "#" :children ["Dashboard"]}
-             :Active {:active true :href "#" :children ["Settings"]}
-             :WithClick {:on-click #(js/alert "Logging out...") :children ["Logout"]}}})
+   :stories {:Default {:args {:href "#" :children ["Dashboard"]}}
+             :Active {:args {:active true :href "#" :children ["Settings"]}}
+             :WithClick {:args {:on-click #(js/alert "Logging out...") :children ["Logout"]}}}})
 
 (defmethod storybook/story "Component/Navigation/Horizontal" [_]
   {:component navigation
-   :stories {:Default {:items [{:props {:href "#" :active true} :children ["Dashboard"]}
-                               {:props {:href "#"} :children ["Projects"]}
-                               {:props {:href "#"} :children ["Team"]}
-                               {:props {:href "#"} :children ["Settings"]}]}}})
+   :stories {:Default {:args {:items [{:props {:href "#" :active true} :children ["Dashboard"]}
+                                      {:props {:href "#"} :children ["Projects"]}
+                                      {:props {:href "#"} :children ["Team"]}
+                                      {:props {:href "#"} :children ["Settings"]}]}}}})
 
 ;; =============================================================================
 ;; LOADING STATES
 ;; =============================================================================
 
 (defui spinner [{:keys [size class]
-                :or {size :md}}]
+                 :or {size :md}}]
   (let [size-classes (case size
                        :sm "w-4 h-4"
                        :md "w-6 h-6"
@@ -254,16 +253,16 @@
 
 (defmethod storybook/story "Component/Feedback/Spinner" [_]
   {:component spinner
-   :stories {:Small {:size :sm}
-             :Medium {:size :md}
-             :Large {:size :lg}
-             :ExtraLarge {:size :xl}}})
+   :stories {:Small {:args {:size :sm}}
+             :Medium {:args {:size :md}}
+             :Large {:args {:size :lg}}
+             :ExtraLarge {:args {:size :xl}}}})
 
 (defmethod storybook/story "Component/Buttons/Loading" [_]
   {:component loading-button
-   :stories {:Default {:children ["Submit"]}
-             :Loading {:loading true :children ["Submit"]}
-             :LoadingPrimary {:loading true :variant :primary :children ["Save Changes"]}}})
+   :stories {:Default {:args {:children ["Submit"]}}
+             :Loading {:args {:loading true :children ["Submit"]}}
+             :LoadingPrimary {:args {:loading true :variant :primary :children ["Save Changes"]}}}})
 
 ;; =============================================================================
 ;; MODALS/OVERLAYS
@@ -290,15 +289,15 @@
 
 (defmethod storybook/story "Component/Overlay/Modal" [_]
   {:component modal
-   :stories {:Default {:open true
-                       :title "Confirm Action"
-                       :children ["Are you sure you want to perform this action?"]
-                       :actions ($ :div {:class "flex space-x-2"}
-                                   ($ button {:variant :outline :size :sm :children ["Cancel"]})
-                                   ($ button {:variant :primary :size :sm :children ["Confirm"]}))}
-             :Warning {:open true
-                       :title "Delete Item"
-                       :children ["This action cannot be undone. Are you sure?"]
-                       :actions ($ :div {:class "flex space-x-2"}
-                                   ($ button {:variant :outline :size :sm :children ["Cancel"]})
-                                   ($ button {:variant :danger :size :sm :children ["Delete"]}))}}})
+   :stories {:Default {:args {:open true
+                              :title "Confirm Action"
+                              :children ["Are you sure you want to perform this action?"]
+                              :actions ($ :div {:class "flex space-x-2"}
+                                          ($ button {:variant :outline :size :sm :children ["Cancel"]})
+                                          ($ button {:variant :primary :size :sm :children ["Confirm"]}))}}
+             :Warning {:args {:open true
+                              :title "Delete Item"
+                              :children ["This action cannot be undone. Are you sure?"]
+                              :actions ($ :div {:class "flex space-x-2"}
+                                          ($ button {:variant :outline :size :sm :children ["Cancel"]})
+                                          ($ button {:variant :danger :size :sm :children ["Delete"]}))}}}})

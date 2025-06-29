@@ -6,14 +6,13 @@
 (defn ^:export proxy
   [cp]
   (fn [props]
-    (let [{:keys [props _children]} (tagged-json/deserialize-values (js->clj props))
-          cp (if (or (map? props) (seq _children))
-               [cp]
-               cp)]
+    (let [{:keys [children] :as props} (tagged-json/deserialize-values (js->clj props))
+          props (dissoc props :children)
+          props (when (seq props) props)]
       (hsx/create-element
-        (cond-> cp
-          (map? props) (conj props)
-          (seq _children) (into _children))))))
+       (cond-> [cp]
+         (map? props) (conj props)
+         (seq children) (into children))))))
 
 (defn ^:export storybook
   [id]
@@ -21,9 +20,7 @@
       (update :component proxy)
       (update :stories
               (fn [stories]
-                (into {} (map (fn [[k v]]
-                                (let [args (cond-> {:props (:props v)}
-                                             (seq (:children v)) (assoc :_children (:children v)))]
-                                  [k (assoc v :args (tagged-json/serialize-values args))])))
+                (into {} (map (fn [[k v]] 
+                                [k (update v :args tagged-json/serialize-values)]))
                       stories)))
       (clj->js)))

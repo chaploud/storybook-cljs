@@ -7,7 +7,8 @@
             :comments     "same as Kafka"}
   :dependencies [[org.clojure/clojure "1.12.0" :scope "provided"]
                  [org.clojure/clojurescript "1.12.42" :scope "provided"]
-                 [io.factorhouse/hsx "0.1.23" :scope "provided"]]
+                 [io.factorhouse/hsx "0.1.23" :scope "provided"]
+                 [com.pitch/uix.core "1.4.4" :scope "provided"]]
   :source-paths ["src"]
   :deploy-repositories [["clojars" {:url      "https://repo.clojars.org"
                                     :username :env/CLOJARS_USERNAME

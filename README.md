@@ -6,7 +6,7 @@ Run [storybook.js 9.0.14](https://storybook.js.org/) with ClojureScript!
 
 * [Node.js](https://nodejs.org/en)
 * [shadow-cljs](https://github.com/thheller/shadow-cljs)
-* A ClojureScript+React project using either [HSX](https://github.com/factorhouse/hsx) or [Uix](https://github.com/pitch-io/uix)
+* A ClojureScript+React project using either [HSX](https://github.com/factorhouse/hsx) or [UIx](https://github.com/pitch-io/uix)
 
 ## Getting started
 

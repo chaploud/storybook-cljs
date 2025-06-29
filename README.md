@@ -168,8 +168,8 @@ Each story multi-method compiles to a ES module that Storybook.js can understand
 
 1. **[Atomic Design](https://bradfrost.com/blog/post/atomic-design-and-storybook/)** - Groups by complexity level:
    ```
-   Atoms/Button/Primary
-   Molecules/Forms/SearchBox  
+   Atoms/Forms/SearchBox
+   Molecules/Button/Primary
    Organisms/Navigation/Header
    Templates/Layout/Homepage
    ```

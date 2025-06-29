@@ -55,9 +55,8 @@ Add to `project.clj` or `deps.edn`:
   (:require [io.factorhouse.storybook.core :as storybook]
             [uix.core :refer [$ defui]]))
 
-(defui button
-  [{:keys [variant size children] :or {variant :primary size :md}}]
-    ($ :button {} children))
+(defui button [{:keys [variant size children] :or {variant :primary size :md}}]
+  ($ :button {} children))
 
 (defmethod storybook/story "Component/Buttons/Secondary" [_]
   {:component button

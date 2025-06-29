@@ -31,7 +31,7 @@ You will need to add a `:storybook` shadow-cljs build profile:
                       :entries     [todomvc.stories]
                       :output-dir  ".storybook/cljs-out/"
                       :build-hooks [(io.factorhouse.storybook.compiler/configure 
-                                      {:compiler io.factorhouse.storybook.compiler.hsx})
+                                      {:compiler io.factorhouse.storybook.compiler.uix})
                                     (io.factorhouse.storybook.compiler/compile)]}}}
 ```
 
@@ -45,7 +45,7 @@ You will need to add a `:storybook` shadow-cljs build profile:
 Add to `project.clj` or `deps.edn`:
 
 ```clojure
-[io.factorhouse/storybook-cljs "0.1.0"]
+[io.factorhouse/storybook-cljs "0.1.39"]
 ```
 
 ### 4. Write your first story

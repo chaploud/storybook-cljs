@@ -1,5 +1,7 @@
 # Storybook CLJS
 
+[![test](https://github.com/factorhouse/storybook-cljs/actions/workflows/test.yml/badge.svg)](https://github.com/factorhouse/storybook-cljs/actions/workflows/test.yml)
+
 Run [storybook.js 9.0.14](https://storybook.js.org/) with ClojureScript!
 
 ## Requirements

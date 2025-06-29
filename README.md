@@ -81,3 +81,167 @@ npx storybook build
 Your Storybook project will get compiled to `./storybook-static/`
 
 
+## Writing Stories
+
+### Overview
+
+Use the `io.factorhouse.storybook.core/story` multi-method to define component stories for your Storybook. This multi-method approach allows you to organize stories hierarchically and generate the appropriate JavaScript files for Storybook consumption.
+
+### Project Structure
+
+You can define multiple story hierarchies in one file:
+```clojure
+(defmethod storybook/story "Component/Buttons/Primary" [_] ...)
+(defmethod storybook/story "Component/Buttons/Secondary" [_] ...)  
+(defmethod storybook/story "Component/Buttons/Variants" [_] ...)
+```
+
+Stories should be organized in a `dev-src` directory to keep development-only code separate from production source:
+
+```
+project/
+├── src/                    ; Production source code
+│   └── components/
+├── dev-src/               ; Development-only stories
+│   ├── stories.cljs       ; Central namespace for collecting stories
+│   └── stories/
+│       ├── buttons.cljs
+│       ├── forms/
+│       │   └── inputs.cljs
+│       └── layout/
+│           └── cards.cljs
+└── shadow-cljs.edn
+```
+
+**Important**: Your `shadow-cljs.edn` `:entries` must include the central namespace (e.g., `dev-src.stories`) that requires all story namespaces to ensure multi-methods are loaded.
+
+```clojure
+;; dev-src/stories.cljs - Central collection namespace
+(ns dev-src.stories
+  (:require [dev-src.stories.buttons.primary]
+            [dev-src.stories.buttons.secondary]
+            [dev-src.stories.forms.inputs]
+            [dev-src.stories.layout.cards]))
+```
+
+### Basic Usage
+
+```clojure
+(ns dev-src.stories.buttons.primary
+  (:require [io.factorhouse.storybook.core :as storybook]
+            [your-app.components.button :refer [button]]))
+
+(defmethod storybook/story "Component/Buttons/Primary" [_]
+  {:component button
+   :stories {:Default {:args {:children ["Click me"]}}
+             :Large {:args {:size :lg :children ["Large button"]}}}})
+```
+
+### Dispatch Value (Story Hierarchy)
+
+The dispatch value represents the **hierarchical path** of your story and determines the file output location:
+
+#### Format
+- Use forward slashes (`/`) to separate hierarchy levels
+- Follow PascalCase or camelCase conventions for readability
+- Be descriptive but concise
+
+#### Examples
+| Dispatch Value | Output File | Purpose |
+|----------------|-------------|---------|
+| `"Component/Buttons/Primary"` | `js-out/component/buttons/primary_story.js` | Primary button variants |
+| `"Component/Forms/Input/Text"` | `js-out/component/forms/input/text_story.js` | Text input stories |
+| `"Layout/Card/Basic"` | `js-out/layout/card/basic_story.js` | Basic card layouts |
+| `"Feedback/Alert/Types"` | `js-out/feedback/alert/types_story.js` | Different alert types |
+
+**Popular Organizational Approaches:**
+
+1. **[Atomic Design](https://bradfrost.com/blog/post/atomic-design-and-storybook/)** - Groups by complexity level:
+   ```
+   Atoms/Button/Primary
+   Molecules/Forms/SearchBox  
+   Organisms/Navigation/Header
+   Templates/Layout/Homepage
+   ```
+
+2. **Functional Grouping** - Groups by purpose ([used by Spotify, Monday.com](https://storybook.js.org/blog/structuring-your-storybook/)):
+   ```
+   Component/Forms/Input
+   Component/Navigation/Menu
+   Component/Feedback/Alert
+   ```
+
+3. **Feature-based** - Groups by application area:
+   ```
+   Dashboard/Charts/LineChart
+   Profile/Settings/AccountForm
+   Commerce/Product/Card
+   ```
+
+### Story definition
+
+The multi-method must return a map with the following structure:
+
+```clojure
+{:component component-function   ; Required: The component function to render (either a UIx or HSX component)
+ :stories   story-map}           ; Required: Map of story definitions
+```
+
+#### Component Key
+- **Required**: The actual component function reference
+- **Type**: Function that accepts props and returns UIx elements
+- **Example**: `button`, `input`, `card`
+
+#### Stories Key
+- **Required**: A map where keys are story names and values are story configurations
+- **Type**: `{StoryName StoryConfig}`
+
+### Story Configuration
+
+#### Core Properties
+```clojure
+{:args        {}           ; Required: All component props go here
+ :name        "Story Name" ; Optional: Display name (defaults to map key)
+ :play        play-fn      ; Optional: Play function for interactions
+ :decorators  [decorator]  ; Optional: Story decorators
+ :parameters  {}           ; Optional: Story parameters}
+```
+
+#### Component Props (args)
+
+```clojure
+{:args {:variant  :primary          ; Component prop
+        :size     :lg               ; Component prop  
+        :disabled true              ; Component prop
+        :children ["Button Text"]}} ; Component children
+```
+
+### Complete Examples
+
+#### Simple Button Stories
+```clojure
+(defmethod storybook/story "Component/Buttons/Primary" [_]
+  {:component button
+   :stories {:Default   {:args {:children ["Primary Button"]}}
+             :Large     {:args {:size :lg :children ["Large Primary"]}}
+             :Disabled  {:args {:disabled true :children ["Disabled"]}}
+             :WithClick {:args {:on-click #(js/alert "Clicked!") 
+                               :children ["Interactive"]}}}})
+```
+
+#### Complex Modal Stories with Decorators
+```clojure
+(defmethod storybook/story "Component/Overlay/Modal" [_]
+  {:component modal
+   :stories {:Confirmation {:args {:open true
+                                  :title "Confirm Action"
+                                  :children ["Are you sure?"]}}
+                           :decorators [(fn [story]
+                                         ; Wrap story with additional context
+                                         story)]
+                           :parameters {:layout "fullscreen"}}
+             :Warning     {:args {:open true
+                                 :title "Delete Item"
+                                 :children ["This cannot be undone"]
+                                 :variant :danger}}}})
+```

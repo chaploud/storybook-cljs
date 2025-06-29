@@ -91,11 +91,12 @@ Your Storybook project will get compiled to `./storybook-static/`
 
 ### Overview
 
-Use the `io.factorhouse.storybook.core/story` multi-method to define component stories for your Storybook. This multi-method approach allows you to organize stories hierarchically and generate the appropriate JavaScript files for Storybook consumption.
+Use the `io.factorhouse.storybook.core/story` multi-method to define component stories for your Storybook.
 
 ### Project Structure
 
 You can define multiple story hierarchies in the same CloujreScript namespace:
+
 ```clojure
 (defmethod storybook/story "Component/Buttons/Primary" [_] ...)
 (defmethod storybook/story "Component/Buttons/Secondary" [_] ...)  

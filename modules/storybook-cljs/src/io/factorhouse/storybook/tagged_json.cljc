@@ -56,18 +56,3 @@
               (coll? x) (into [] (map thisfn) x)
               :else x))]
     (thisfn x)))
-
-(comment
-  (deserialize-values
-   (serialize-values {:title       "Foo!"
-                      :description "Hello world"
-                      :items       [{:icon        :cog
-                                     :icon-bg     "bg-teal-500"
-                                     :title       "Setup"
-                                     :description "Get started using Kafka Connect with Kpow."
-                                     :href        "#"}
-                                    {:icon        :document
-                                     :icon-bg     "bg-sky-500"
-                                     :title       "Documentation"
-                                     :description "View Kpow's Kafka Connect usage documentation."
-                                     :href        "#"}]})))

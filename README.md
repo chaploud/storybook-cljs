@@ -4,7 +4,7 @@
 [![Clojars Project](https://img.shields.io/clojars/v/io.factorhouse/storybook-cljs.svg)](https://clojars.org/io.factorhouse/storybook-cljs)
 
 
-Run [Storybook 9](https://storybook.js.org/) with ClojureScript!
+Use [Storybook 9](https://storybook.js.org/) with ClojureScript!
 
 See the [examples](/examples) directory in this Git repo for working examples.
 

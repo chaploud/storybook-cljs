@@ -159,10 +159,10 @@ Each story multi-method compiles to a ES module that Storybook.js can understand
 #### Examples
 | Dispatch Value | Output File |
 |----------------|-------------|
-| `"Component/Buttons/Primary"` | `js-out/component/buttons/primary_story.js` |
-| `"Component/Forms/Input/Text"` | `js-out/component/forms/input/text_story.js` |
-| `"Layout/Card/Basic"` | `js-out/layout/card/basic_story.js` |
-| `"Feedback/Alert/Types"` | `js-out/feedback/alert/types_story.js` |
+| `"Component/Buttons/Primary"` | `.storybook/js-out/component/buttons/primary_story.js` |
+| `"Component/Forms/Input/Text"` | `.storybook/js-out/component/forms/input/text_story.js` |
+| `"Layout/Card/Basic"` | `.storybook/js-out/layout/card/basic_story.js` |
+| `"Feedback/Alert/Types"` | `.storybook/js-out/feedback/alert/types_story.js` |
 
 **Popular Organizational Approaches:**
 

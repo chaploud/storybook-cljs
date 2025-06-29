@@ -148,7 +148,7 @@ project/
 
 ### Dispatch Value (Story Hierarchy)
 
-The dispatch value represents the **hierarchical path** of your story and determines the file output location:
+The dispatch value represents the **hierarchical path** of your story and determines the file output location, and therefore your Storybook structure:
 
 Each story multi-method compiles to a ES module that Storybook.js can understand. The build hooks defined in your shadow-cljs profile takes care of this compilation step.
 

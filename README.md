@@ -255,7 +255,7 @@ Each story multi-method compiles to a ES module that Storybook.js can understand
                                  :variant :danger}}}})
 ```
 
-## Tagged JSON / SerDes
+## Tagged JSON
 
 StorybookJS expects story `:args` as a plain JS object. In order to support rich Clojure types (keywords, sets, etc) storybook-cljs uses 'tagged JSON': 
 

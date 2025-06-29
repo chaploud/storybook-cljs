@@ -6,6 +6,8 @@
 
 Run [Storybook 9](https://storybook.js.org/) with ClojureScript!
 
+See the [examples](/examples) directory in this Git repo for working examples.
+
 ## Requirements
 
 * [Node.js](https://nodejs.org/en)
@@ -13,8 +15,6 @@ Run [Storybook 9](https://storybook.js.org/) with ClojureScript!
 * A ClojureScript+React project using either [HSX](https://github.com/factorhouse/hsx) or [UIx](https://github.com/pitch-io/uix)
 
 ## Getting started
-
-See the [examples](/examples) directory in this Git repo for working examples.
 
 ### 1. Initialize project
 

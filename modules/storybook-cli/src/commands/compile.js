@@ -13,23 +13,19 @@ function setupJSDOM() {
   }
 }
 
-async function importClojureScriptModule(filePath, isESM) {
-  if (isESM) {
-    return await import(new URL(filePath, import.meta.url).href);
-  } else {
-    return await import(filePath);
-  }
-}
-
 async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
   const isESM = target === 'esm';
-  const paths = {
-    entry: resolveFile(outputDir, cljsEntry + '.js'),
-    core: resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
-  };
 
   try {
+    const paths = {
+      entry: resolveFile(outputDir, cljsEntry + '.js'),
+      core: resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
+    };
+
+    // Load user ClojureScript code first (contains story definitions)
     await importClojureScriptModule(paths.entry, isESM);
+
+    // Load storybook-cljs core (contains export_stories function)
     const storybookCljs = await importClojureScriptModule(paths.core, isESM);
 
     return storybookCljs.default.export_stories(
@@ -39,7 +35,15 @@ async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
       target
     );
   } catch (error) {
-    throw new Error(`Failed to resolve ${target} stories from ${outputDir}: ${error.message}`);
+    throw new Error(`Failed to resolve stories: ${error.message}`);
+  }
+}
+
+async function importClojureScriptModule(filePath, isESM) {
+  if (isESM) {
+    return await import(new URL(filePath, import.meta.url).href);
+  } else {
+    return await import(filePath);
   }
 }
 
@@ -55,7 +59,7 @@ function ensureStorybook() {
 }
 
 export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry, target = 'npm-module') {
-  console.time(`storybook-compile-${target}`);
+  console.time('storybook-compile');
   ensureStorybook();
   setupJSDOM();
 
@@ -66,5 +70,5 @@ export async function compile(compilerNs, outputDir, jsOutDir, cljsEntry, target
     fs.mkdirSync(dirPath, { recursive: true });
     fs.writeFileSync(filePath, content, 'utf8');
   });
-  console.timeEnd(`storybook-compile-${target}`);
+  console.timeEnd('storybook-compile');
 }

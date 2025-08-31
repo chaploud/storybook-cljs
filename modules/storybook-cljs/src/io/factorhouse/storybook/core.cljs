@@ -13,19 +13,12 @@
     (str "./" base-path)  ; esm requires explicit relative paths
     base-path))           ; npm-module uses regular paths
 
-(defn- generate-import-statement
-  "Generate import statement based on target mode"
-  [var-name path target]
-  (if (esm-mode? target)
-    (str "import " var-name " from " path ";")
-    (str "import " path ";")))
-
-(defn- generate-named-import
-  "Generate named import based on target mode"
-  [imports path target]
-  (if (esm-mode? target)
-    (str "import {" imports "} from " path ";")
-    (str "import {" imports "} from " path ";")))
+(defn- generate-import
+  "Generate import statement based on import type"
+  [imports path]
+  (if (empty? imports)
+    (str "import " path ";")                      ; side-effect import
+    (str "import {" imports "} from " path ";"))) ; named import
 
 (defn export-story
   [output-dir compiler-ns entry id target]
@@ -39,8 +32,8 @@
         compiler-ns-path (pr-str (format-import-path (str dirs output-dir compiler-ns ".js") target))
 
         ;; Generate import statements
-        js-str [(generate-import-statement "" proj-main target)
-                (generate-named-import "storybook" compiler-ns-path target)
+        js-str [(generate-import "" proj-main)
+                (generate-import "storybook" compiler-ns-path)
                 ""
                 (str "const story = storybook(" pr-id ");")
                 (str "export default {title: " pr-id ", component: story.component}")

@@ -13,51 +13,33 @@ function setupJSDOM() {
   }
 }
 
-async function resolveStoriesCommonJS(outputDir, compilerNs, cljsEntry, target) {
-  try {
-    // CommonJS dynamic import approach
-    await import(resolveFile(outputDir, cljsEntry + '.js'));
-    const storybookCljs = await import(
-      resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
-    );
-
-    return storybookCljs.default.export_stories(
-      relativePath(outputDir, '.storybook'),
-      compilerNs,
-      cljsEntry,
-      target
-    );
-  } catch (error) {
-    throw new Error(`Failed to resolve CommonJS stories: ${error.message}`);
+async function importClojureScriptModule(filePath, isESM) {
+  if (isESM) {
+    return await import(new URL(filePath, import.meta.url).href);
+  } else {
+    return await import(filePath);
   }
 }
-
-async function resolveStoriesESM(outputDir, compilerNs, cljsEntry, target) {
-  try {
-    // ESM requires explicit file:// URLs for absolute paths
-    const entryPath = new URL(resolveFile(outputDir, cljsEntry + '.js'), import.meta.url).href;
-    const corePath = new URL(resolveFile(outputDir, 'io.factorhouse.storybook.core.js'), import.meta.url).href;
-
-    await import(entryPath);
-    const storybookCljs = await import(corePath);
-
-    return storybookCljs.default.export_stories(
-      relativePath(outputDir, '.storybook'),
-      compilerNs,
-      cljsEntry,
-      target
-    );
-  } catch (error) {
-    throw new Error(`Failed to resolve ESM stories: ${error.message}`);
-  }
-}
-
 
 async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
-  if (target === 'esm') {
-    return resolveStoriesESM(outputDir, compilerNs, cljsEntry, target);
-  } else {
-    return resolveStoriesCommonJS(outputDir, compilerNs, cljsEntry, target);
+  const isESM = target === 'esm';
+  const paths = {
+    entry: resolveFile(outputDir, cljsEntry + '.js'),
+    core: resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
+  };
+
+  try {
+    await importClojureScriptModule(paths.entry, isESM);
+    const storybookCljs = await importClojureScriptModule(paths.core, isESM);
+
+    return storybookCljs.default.export_stories(
+      relativePath(outputDir, '.storybook'),
+      compilerNs,
+      cljsEntry,
+      target
+    );
+  } catch (error) {
+    throw new Error(`Failed to resolve ${target} stories from ${outputDir}: ${error.message}`);
   }
 }
 

@@ -37,16 +37,14 @@
   (assert (symbol? compiler) "Missing argument :compiler. Expected a symbol like io.factorhouse.storybook.compiler.hsx")
   (let [output-dir (-> build-state :shadow.build/config :output-dir)
         entry      (some-> build-state :shadow.build/config :entries first name)
-        shadow-target (-> build-state :shadow.build/config :target) ; detect target from shadow-cljs.edn
-        esm-mode? (= shadow-target :esm)
-        target-str (if esm-mode? "esm" "npm-module")
-        args       ["npx" npm-cmd "compile" (name compiler) output-dir js-out entry target-str]]
+        target     (-> build-state :shadow.build/config :target) ; detect target from shadow-cljs.edn
+        args       ["npx" npm-cmd "compile" (name compiler) output-dir js-out entry (name target)]]
 
     (-> build-state
         (assoc ::args args)
         (assoc ::js-out js-out)
         (update-in [:shadow.build/config :entries] conj compiler)
-        (cond-> esm-mode? ; esm-specific settings
+        (cond-> (= target :esm) ; esm-specific settings
           (assoc-in [:shadow.build/config :js-options :js-provider] :import))
         (assoc-in [:shadow.build/config :js-options :resolve "os"] {:target :npm :require "os-browserify/browser"})
         (assoc-in [:shadow.build/config :js-options :resolve "tty"] {:target :npm :require "tty-browserify"}))))

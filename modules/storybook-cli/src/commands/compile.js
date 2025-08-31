@@ -18,6 +18,7 @@ async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
     const entryFile = resolveFile(outputDir, cljsEntry + '.js');
     const coreFile = resolveFile(outputDir, 'io.factorhouse.storybook.core.js');
     let storybookCljs = null;
+
     if (target === 'npm-module') {
       await import(entryFile);
       storybookCljs = await import(coreFile);
@@ -27,6 +28,7 @@ async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
     } else {
       throw new Error(`Unknown target: ${target}`);
     }
+
     return storybookCljs.default.export_stories(
       relativePath(outputDir, '.storybook'),
       compilerNs,

@@ -3,16 +3,44 @@
 
 (defmulti story identity)
 
+(defn- esm-mode? [target]
+  (= target "esm"))
+
+(defn- format-import-path
+  "Format import path based on target mode"
+  [base-path target]
+  (if (esm-mode? target)
+    (str "./" base-path)  ; esm requires explicit relative paths
+    base-path))           ; npm-module uses regular paths
+
+(defn- generate-import-statement
+  "Generate import statement based on target mode"
+  [var-name path target]
+  (if (esm-mode? target)
+    (str "import " var-name " from " path ";")
+    (str "import " path ";")))
+
+(defn- generate-named-import
+  "Generate named import based on target mode"
+  [imports path target]
+  (if (esm-mode? target)
+    (str "import {" imports "} from " path ";")
+    (str "import {" imports "} from " path ";")))
+
 (defn export-story
-  [output-dir compiler-ns entry id]
+  [output-dir compiler-ns entry id target]
   (let [{:keys [stories]} (story id)
         depth (count (str/split id #"/"))
         dirs (str/join (repeat depth "../"))
         pr-id (pr-str (str id))
-        proj-main (pr-str (str dirs output-dir entry ".js"))
-        compiler-ns (pr-str (str dirs output-dir compiler-ns ".js"))
-        js-str [(str "import " proj-main ";")
-                (str "import {storybook} from " compiler-ns ";")
+
+        ;; Format paths based on target mode
+        proj-main (pr-str (format-import-path (str dirs output-dir entry ".js") target))
+        compiler-ns-path (pr-str (format-import-path (str dirs output-dir compiler-ns ".js") target))
+
+        ;; Generate import statements
+        js-str [(generate-import-statement "" proj-main target)
+                (generate-named-import "storybook" compiler-ns-path target)
                 ""
                 (str "const story = storybook(" pr-id ");")
                 (str "export default {title: " pr-id ", component: story.component}")
@@ -23,8 +51,8 @@
     (str/join "\n" js-str)))
 
 (defn ^:export export-stories
-  [output-dir compiler-ns entry]
+  [output-dir compiler-ns entry target]
   (clj->js
    (for [[k _] (methods story)]
      (let [file (str/join "_" (str/split (str/lower-case k) " "))]
-       [(str file "_story.js") (export-story output-dir compiler-ns entry k)]))))
+       [(str file "_story.js") (export-story output-dir compiler-ns entry k target)]))))

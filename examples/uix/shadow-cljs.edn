@@ -1,7 +1,7 @@
 {:dependencies [[com.pitch/uix.core "1.4.4"]
-                [io.factorhouse/storybook-cljs "0.2.0"]]
+                [io.factorhouse/storybook-cljs "0.2.1"]]
  :source-paths  ["src"]
- :builds        {:storybook {:target            :npm-module
+ :builds        {:storybook {:target            :npm-module ; or :esm
                              :entries           [example.core]
                              :output-dir        ".storybook/cljs-out/"
                              :build-hooks       [(io.factorhouse.storybook.compiler/configure

@@ -14,20 +14,19 @@ function setupJSDOM() {
 }
 
 async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
-  const isESM = target === 'esm';
-
   try {
-    const paths = {
-      entry: resolveFile(outputDir, cljsEntry + '.js'),
-      core: resolveFile(outputDir, 'io.factorhouse.storybook.core.js')
-    };
-
-    // Load user ClojureScript code first (contains story definitions)
-    await importClojureScriptModule(paths.entry, isESM);
-
-    // Load storybook-cljs core (contains export_stories function)
-    const storybookCljs = await importClojureScriptModule(paths.core, isESM);
-
+    const entryFile = resolveFile(outputDir, cljsEntry + '.js');
+    const coreFile = resolveFile(outputDir, 'io.factorhouse.storybook.core.js');
+    let storybookCljs = null;
+    if (target === 'npm-module') {
+      await import(entryFile);
+      storybookCljs = await import(coreFile);
+    } else if (target === 'esm') {
+      await import(new URL(entryFile).href);
+      storybookCljs = await import(new URL(coreFile).href);
+    } else {
+      throw new Error(`Unknown target: ${target}`);
+    }
     return storybookCljs.default.export_stories(
       relativePath(outputDir, '.storybook'),
       compilerNs,
@@ -36,14 +35,6 @@ async function resolveStories(outputDir, compilerNs, cljsEntry, target) {
     );
   } catch (error) {
     throw new Error(`Failed to resolve stories: ${error.message}`);
-  }
-}
-
-async function importClojureScriptModule(filePath, isESM) {
-  if (isESM) {
-    return await import(new URL(filePath, import.meta.url).href);
-  } else {
-    return await import(filePath);
   }
 }
 

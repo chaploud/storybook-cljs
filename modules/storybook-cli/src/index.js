@@ -21,6 +21,7 @@ program
   .argument('<string>', 'outDir')
   .argument('<string>', 'jsOutDir')
   .argument('<string>', 'entryNs')
+  .argument('<string>', 'target')
   .description('Compile Storybook.js from ClojureScript source')
   .action(compile);
 
